@@ -7,6 +7,7 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -37,6 +38,8 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    var long = array.length;
+    return n === undefined ? array[long - 1] : array.slice(Math.max((long - n), 0), long);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -45,10 +48,18 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    if (Array.isArray(collection)) {
+      for (var i = 0; i < collection.length; i++) {
+        iterator(collection[i], i, collection);
+      }
+    } else {
+      for (var key in collection) {
+        iterator(collection[key], key, collection);
+      }
+    }
   };
 
-  // Returns the index at which value can be found in the array, or -1 if value
-  // is not present in the array.
+  // Returns the index at which value can be found in the array, or -1 if value is not present.
   _.indexOf = function(array, target) {
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
@@ -66,16 +77,55 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var results = [];
+
+    _.each(collection, function(element) {
+      if (test(element)) {
+        results.push(element);
+      } 
+    });
+
+    return results;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+    return _.filter(collection, function(element) {
+      if (!test(element)) {
+        return element;
+      }
+    });
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    var iterator = iterator || _.identity;
+    var tested = [];
+    var results = [];
+    var copy = array.slice();
+    var abc = [];
+
+    if (arguments[1] === false || arguments[1] === undefined) {
+      copy = copy.sort();
+    }
+
+    for (var i = 0; i < copy.length; i++) {
+      var iterated = iterator(copy[i]);
+      tested.push(iterated);
+    }
+    
+    
+    for (var j = 0; j < tested.length; j++) {
+      if (abc.indexOf(tested[j]) === -1) {
+        results.push(copy[j]);
+        abc.push(tested[j]);
+      }
+    }
+    
+    return results;   
   };
 
 
