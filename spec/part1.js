@@ -452,6 +452,22 @@
         expect(input).to.eql([1, 2, 3, 4, 5]);
       });
 
+      it('should pass items of the array when multiplied together (factorial)', function() {
+        var factorial = _.reduce([1, 2, 3, 4], function(memo, item) {
+          return memo * item;
+        }, 1);
+
+        expect(factorial).to.eql(24);
+      });
+
+      it('should pass items with negative values into the iterator and calc sum', function() {
+        var orderTraversed = _.reduce([-1, -2, 3, 4], function(memo, item) {
+          return memo + item;
+        }, 0);
+
+        expect(orderTraversed).to.eql(4);
+      });      
+
       it('should invoke the iterator function with arguments (memo, item) in that order', function() {
         var memoInCallback, itemInCallback;
 
