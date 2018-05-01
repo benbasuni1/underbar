@@ -62,7 +62,7 @@
   };
 
   // Produce a duplicate-free version of the array.
-  _.uniq = function(array, isSorted, iterator) {
+  _.uniq = function(array) {
     let arr = [];
     _.each(array , elem =>{
       if(_.indexOf(arr,elem) === -1) arr.push(elem);
