@@ -189,8 +189,7 @@
   _.extend = function(obj) {
     for (let i = 1; i < arguments.length; i++) {
       for (let key in arguments[i]) {
-        let value = arguments[i][key];
-        obj[key] = value;
+        obj[key] = arguments[i][key];
       }
     }
     return obj;
@@ -202,8 +201,7 @@
     for (let i = 1; i < arguments.length; i++) {
       for (let key in arguments[i]) {
         if (!obj.hasOwnProperty(key)) {
-          let value = arguments[i][key];
-          obj[key] = value;
+          obj[key] = arguments[i][key];
         }
       }
     }
@@ -226,20 +224,21 @@
     // so that they'll remain available to the newly-generated function every
     // time it's called.
     let alreadyCalled = false;
-    let result;
+    let callable;
 
-    // TIP: We'll return a new function that delegates to the old one, but only
-    // if it hasn't been called before.
-    return function() {
+    let result = function() {
+
       if (!alreadyCalled) {
-        // TIP: .apply(this, arguments) is the standard way to pass on all of the
-        // infromation from one function call to another.
-        result = func.apply(this, arguments);
+        callable = func.call(this, ...arguments);
+        func = null;
         alreadyCalled = true;
       }
-      // The new function always returns the originally computed result.
-      return result;
-    };
+
+      return callable;
+    }
+
+    return result;
+
   };
 
   // Memorize an expensive function's results by storing them. You may assume
@@ -251,14 +250,24 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+
     let log = {};
     return function(a, b) {
-      let key = a + ' - ' + b;
+      let key = a + '-' + b;
       if (!log.hasOwnProperty(key)) {
         log[key] = func.call(this, a, b);
       }
+
       return log[key];
-    };
+    }
+
+    //return function(...args) {
+      //let key = args.toString();
+      //if (!log.hasOwnProperty(key)) {
+        //log[key] = func.call(this, ...args);
+      //}
+      //return log[key];
+    //};
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -286,7 +295,7 @@
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
      let newArr = array.slice();
-       for (let i = array.length - 1; i > 0; i--) {
+       for (let i = 0; i < array.length; i++) {
          let j = Math.floor(Math.random() * (i + 1));
          let temp = newArr[i];
          newArr[i] = newArr[j];
@@ -306,20 +315,12 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-    let arr = [] ;
-    if( typeof(functionOrKey) === 'string'){
-      _.each(collection, (elem , key) => {
-        arr.push(elem[functionOrKey].apply(elem,args))
-      });
-    }
-    else {
-      _.each(collection, (elem , key) => {
-        arr.push(functionOrKey.apply(elem,arguments))
-      });
-    }
-
-    return arr;
+    return _.map(collection, item => {
+      let method = typeof functionOrKey === 'string' ? item[functionOrKey] : functionOrKey;
+      return method.apply(item, args);
+    });
   };
+
 
   // Sort the object's values by a criterion produced by an iterator.
   // If iterator is a string, sort objects by that property with the name
@@ -431,14 +432,14 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
-    let arr = [];
-    let x   = Array.from(arguments)
-    let y   = x[0]
-    x.slice(1);
-    for (let i=0;i<x.length;i++){
-      for (let j = 0; j < x[i].length; j++) {
-        if(_.indexOf(y, x[i][j])!==-1) {
-          arr.push(x[i][j])
+    let arr  = [];
+    let args = Array.from(arguments);
+    let innerArgs = args[0];
+    for (let i=0;i<args.length;i++){
+      for (let j = 0; j < args[i].length; j++) {
+        let current = args[i][j];
+        if(_.indexOf(innerArgs, current) !== -1) {
+          arr.push(args[i][j])
         }
       }
     }
