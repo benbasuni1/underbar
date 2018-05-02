@@ -7,27 +7,20 @@ const once = func => {
 
   // Set alreadyCalled flag to false
   let alreadyCalled = false;
-  let callable;
 
-  // set result to be a function
-  let result = function() {
+  // return this function
+  return function() {
 
     // if alreadyCalled is false
     if (!alreadyCalled) {
 
-      // set callable variable to call func applied with this, and arguments
-      callable = func.apply(this, arguments);
-
-      //callable = func.call(this, ...arguments);
-      func = null;
-
+      // call func applied with this, and arguments
+      func.apply(this, arguments);
+        
+      // set alreadyCalled to true
       alreadyCalled = true;
     }
-
-    return callable;
   }
-
-  return result();
 }
 
 const memoize = func => {
