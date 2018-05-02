@@ -7,6 +7,7 @@ const once = func => {
   return function() {
 
     // if alreadyCalled is false
+    // Access to alreadyCalled variable is the closure here
     if (!alreadyCalled) {
 
       // call func applied with this, and arguments
