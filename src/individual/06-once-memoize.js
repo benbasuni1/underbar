@@ -1,8 +1,3 @@
-// BIND  - grab a function to be called later within a certain context.
-// CALL  - Invoke function immediately using commas to separate arguments, setting a unique THIS as 1st param
-// APPLY - Invoke function immediately using array of arguments, setting a unique THIS as 1st param
-// ARGUMENTS - These are the arguments that are passed through the parent function
-
 const once = func => {
 
   // Set alreadyCalled flag to false
@@ -46,3 +41,36 @@ const memoize = func => {
   };
 }
 
+/* O N C E
+    SET ALREADYCALLED FLAG TO FALSE
+    SET RESULT TO BE AFUNCTION
+      IF ALREADY CALLED IS FALSE
+        SET CALLABLE VARIABLE TO CALL FUNC APPLIED WITH THIS AND ARGS
+        SET FUNC TO NULL
+        SET ALREADY CALLED TO TRUE
+      RETURN CALLABLE
+   RETURN RESULT
+
+/* M E M O I Z E
+    SETUP CACHE HASH MAP
+    RETURN FUNCTION WITH ARGUMENTS FROM FUNC
+      KEY JUST NEEDS TO BE SOMETHING UNIQUE THAT WE CAN CALL, SO SET TO ARGS.TOSTRING
+      IF KEY DOES NOT EXIST IN CACHE
+        SET VAL OF CACHE[KEY] TO BE FUNCTION IMMEDIATELY INVOKED USING THIS & ARGS
+
+      OTHERWISE, RETURN VALUE OF CACHE[KEY]
+
+// BIND  - grab a function to be called later within a certain context.
+// CALL  - Invoke function immediately using commas to separate arguments, setting a unique THIS as 1st param
+// APPLY - Invoke function immediately using array of arguments, setting a unique THIS as 1st param
+// ARGUMENTS - These are the arguments that are passed through the parent function
+
+
+  let log = {};
+  return function(a, b) {
+    let key = a + '-' + b;
+    if (!log.hasOwnProperty(key))
+      log[key] = func.call(this, a, b);
+  return log[key];
+  }
+*/

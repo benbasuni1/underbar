@@ -1,20 +1,3 @@
-const each = (collection, iterator) => {
-
-  // If Array
-  if (Array.isArray(collection)) {
-
-    // Loop through arr elements, and perform iteration as val, key, col
-    for (let i = 0; i < collection.length; i++)
-      iterator(collection[i], i, collection);
-
-  // If Object
-  } else {
-
-    // Loop through obj elements, and perform iteration as val, key, col
-    for (let i in collection)
-      iterator(collection[i], i, collection);
-  }
-}
 
 const indexOf = (arr, target) => {
 
@@ -26,6 +9,7 @@ const indexOf = (arr, target) => {
 
     // If item === target and result is -1 (reason for result = -1 is so that it takes only the 1st instance)
     if (item === target && result === -1)
+
       // result becomes index
       result = index;
   });
@@ -51,7 +35,30 @@ const reject = (collection, test) => {
   // Return the filtering through the collection
   return filter(collection, elem => {
 
-    // If item does not pass the test, return the elem (let it get pushed ont what is being returned)
+    // If item does not pass the test, return the elem (let it get pushed onto what filtered return)
     if (!test(elem)) return elem;
   });
 };
+
+/*
+
+
+/* I N D E X _ O F
+      SET RESULT TO -1
+
+      FOR EACH ITEM IN ARRAY
+        IF ITEM === TARGET & RESULT = -1
+          RESULT = INDEX
+
+      RETURN RESULT
+
+/* F I L T E R
+      FOR EACH ITEM IN ARRAY
+        IF TEST(ELEM) PASSES, PUSH TO RESULTS
+
+      RETURN RESULT
+
+/* R E J E C T
+  FILTER THROUGH COLLECTION
+  IF ITEM DOES NOT PASS TEST, RETURN ELEM ONTO FILTERED ARR
+*/

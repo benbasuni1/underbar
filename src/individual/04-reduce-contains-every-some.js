@@ -1,19 +1,3 @@
-const reduce = (collection, iterator, accumulator) => {
-
-  let accumulatorNotPresent = arguments.length === 2;
-
-  each(collection, val => {
-    if (accumulatorNotPresent) {
-      accumulator = val;
-      accumulatorNotPresent = false;
-    } else {
-      accumulator = iterator(accumulator, val);
-    }
-  });
-
-  return accumulator;
-}
-
 const contains = (collection, target) => {
 
   // Use reduce for the collection, iterator consists of wasFound and item
@@ -58,8 +42,33 @@ const some = (collection, iterator) => {
   }, false);
 };
 
+/*
 
+/* C O N T A I N S
+      USE REDUCE FOR THE COLLECTION, ITERATOR CONSISTS OF
+      WASFOUND & ITEM,
 
+        IF ITEM WAS FOUND, RETURN TRUE
 
+        RETURN ITEM === TARGET
 
+     SET ACCUMULATOR TO FALSE (3rd REDUCE ARG)
 
+/* E V E R Y
+      IF ITERATOR IS NOT PRESENT, SET TO IDENTITY
+
+      REDUCE WITH ITERATOR AS TRUE AND ITEM
+        IF ISTRUE AND ITERATOR ITEM RETURN TRUE
+        OTHERWISE, RETURN FALSE
+
+      SET ACC TO TRUE (3rd ARG OF REDUCE)
+
+/* S O M E
+      IF ITERATOR IS NOT PRESENT, SET TO IDENTITY
+      USE ! EVERY TO ITERATE THROUGH COLLECTION
+        IF ITERATOR(ITEM) RETURN FALSE
+
+        OTHERWISE, RETURN TRUE
+
+      3RD ARG IS FALSE
+*/
