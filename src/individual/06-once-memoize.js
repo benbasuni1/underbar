@@ -1,12 +1,9 @@
 const once = func => {
 
-  // Set alreadyCalled flag to false
   let alreadyCalled = false;
 
-  // return this function
   return function() {
 
-    // if alreadyCalled is false
     // Access to alreadyCalled variable is the closure here
     if (!alreadyCalled) {
 
