@@ -1,16 +1,9 @@
-const once = func => {
-
+const once = fn => {
   let alreadyCalled = false;
-
+  
   return function() {
-
-    // Access to alreadyCalled variable is the closure here
     if (!alreadyCalled) {
-
-      // call func applied with this, and arguments
-      func.apply(this, arguments);
-        
-      // set alreadyCalled to true
+      fn.apply(this, arguments);
       alreadyCalled = true;
     }
   }
